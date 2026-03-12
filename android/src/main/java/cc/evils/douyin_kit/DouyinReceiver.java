@@ -1,4 +1,4 @@
-package io.github.v7lin.douyin_kit;
+package cc.evils.douyin_kit;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

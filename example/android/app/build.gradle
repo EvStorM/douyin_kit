@@ -1,3 +1,9 @@
+plugins {
+    id "com.android.application"
+    id "org.jetbrains.kotlin.android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -6,35 +12,19 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
-
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
-}
-
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'
+def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: '1.0'
 
 android {
-    compileSdkVersion 31
-
+    namespace "cc.evils.douyin_kit.example"
+    compileSdkVersion flutter.compileSdkVersion
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     sourceSets {
@@ -42,29 +32,29 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.doudtong.app"
-        minSdkVersion 19
-        targetSdkVersion 30
+        applicationId "cc.evils.douyin_kit.example"
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
         manifestPlaceholders = [
-            "KWAI_APP_ID": "ks00000000000", // 申请分配的appId
+            "KWAI_APP_ID": "ks703687443040312600", // 申请分配的appId
             "KWAI_SCOPE" : "user_info"      // 账号授权需要申请的scope权限，多个scope可以使用","分割，代表需要用户授权什么能力
         ]
     }
 
     signingConfigs {
         debug {
-            storeFile file("key.keystore")
+            storeFile file("test.keystore")
             storePassword '123456'
-            keyAlias 'key0'
+            keyAlias 'test'
             keyPassword '123456'
         }
         release {
-            storeFile file("key.keystore")
+            storeFile file("test.keystore")
             storePassword '123456'
-            keyAlias 'key0'
+            keyAlias 'test'
             keyPassword '123456'
         }
     }

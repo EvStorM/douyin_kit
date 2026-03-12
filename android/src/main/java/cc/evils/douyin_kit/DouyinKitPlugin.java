@@ -1,4 +1,4 @@
-package io.github.v7lin.douyin_kit;
+package cc.evils.douyin_kit;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -51,13 +51,11 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.view.FlutterNativeView;
 
 /**
  * DouyinKitPlugin
  */
-public final class DouyinKitPlugin implements FlutterPlugin, ActivityAware, MethodCallHandler, PluginRegistry.ViewDestroyListener {
+public final class DouyinKitPlugin implements FlutterPlugin, ActivityAware, MethodCallHandler {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -436,17 +434,6 @@ public final class DouyinKitPlugin implements FlutterPlugin, ActivityAware, Meth
         result.success(null);
     }
 
-    // --- ViewDestroyListener
-
-    @Override
-    public boolean onViewDestroy(FlutterNativeView view) {
-        if (register.compareAndSet(true, false)) {
-            DouyinReceiver.unregisterReceiver(applicationContext, douyinReceiver);
-        }
-        return false;
-    }
-
-    // ---
     private String getShareFilePath(String fileUri) {
         DouYinOpenApi openApi = createOpenApi();
         if (openApi != null && openApi.isShareSupportFileProvider()) {

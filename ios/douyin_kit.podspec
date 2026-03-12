@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'douyin_kit'
-  s.version          = '0.0.1'
+  s.version          = '1.0.1'
   s.summary          = 'A new flutter plugin project.'
   s.description      = <<-DESC
 A new flutter plugin project.
@@ -21,8 +21,8 @@ A new flutter plugin project.
   # v1.8.7.1
   s.static_framework = true
   s.subspec 'vendor' do |sp|
-    sp.dependency 'DouyinOpenSDK', '~> 4.0.0'
-    sp.dependency 'KwaiSDK', '~> 3.6.5'
+    sp.dependency 'DouyinOpenSDK', '~> 4.2.4'
+    sp.dependency 'KwaiSDK', '~> 3.7.1'
 
   end
 

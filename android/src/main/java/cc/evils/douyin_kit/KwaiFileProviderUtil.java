@@ -1,4 +1,4 @@
-package io.github.v7lin.douyin_kit;
+package cc.evils.douyin_kit;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

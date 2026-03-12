@@ -1,4 +1,4 @@
-package io.github.v7lin.douyin_kit;
+package cc.evils.douyin_kit;
 
 import androidx.core.content.FileProvider;
 

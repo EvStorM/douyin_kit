@@ -1,0 +1,26 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "app_youy_flutter dev",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--dart-define=HOST=dev"]
+    },
+    {
+      "name": "app_youy_flutter prod",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--dart-define=HOST=prod"]
+    },
+    {
+      "name": "app_youy_flutter (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    }
+  ]
+}

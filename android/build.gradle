@@ -1,14 +1,17 @@
-group 'io.github.v7lin.douyin_kit'
-version '0.0.1'
+group 'cc.evils.douyin_kit'
+version '1.0.1'
 
 buildscript {
+    ext.kotlin_version = "2.1.0"
     repositories {
         google()
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.4'
+        classpath 'com.android.tools.build:gradle:8.7.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
     }
 }
 
@@ -16,10 +19,8 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
-
         // 快手
         maven { url 'https://repo1.maven.org/maven2/' }
-
         maven { url 'https://artifact.bytedance.com/repository/AwemeOpenSDK' }
     }
 
@@ -28,12 +29,12 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
-
+    namespace = "cc.evils.douyin_kit"
+    compileSdkVersion 34
     resourcePrefix 'douyin_kit'
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 24
 
 
         manifestPlaceholders = [
@@ -63,10 +64,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.bytedance.ies.ugc.aweme:opensdk-china-external:0.1.8.0'
-    implementation 'com.bytedance.ies.ugc.aweme:opensdk-common:0.1.8.0'
-
+    implementation 'com.bytedance.ies.ugc.aweme:opensdk-china-external:0.2.0.8'
+    implementation 'com.bytedance.ies.ugc.aweme:opensdk-common:0.2.0.8'
     // 快手sdk
-    // implementation 'com.kwai.opensdk.sdk:kwai-opensdk-withauth:3.0.4'
-    implementation 'com.github.kwaisocial:kwai-opensdk-withauth:3.0.4'
+    implementation 'com.github.kwaisocial:kwai-opensdk-withauth:3.7.2'
 }

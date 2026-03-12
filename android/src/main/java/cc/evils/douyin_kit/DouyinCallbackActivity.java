@@ -1,4 +1,4 @@
-package io.github.v7lin.douyin_kit;
+package cc.evils.douyin_kit;
 
 import android.app.Activity;
 import android.content.Intent;
