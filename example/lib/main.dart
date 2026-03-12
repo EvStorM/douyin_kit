@@ -29,7 +29,7 @@ class DemoPage extends StatefulWidget {
 }
 
 class _DemoPageState extends State<DemoPage> {
-  static const String _defaultClientKey = 'aw6sdvh96ng2gdsk';
+  static const String _defaultClientKey = 'aw14u9hdzmysru71';
 
   final ScrollController _scrollController = ScrollController();
   final List<String> _logs = <String>[];
@@ -282,14 +282,11 @@ class _DemoPageState extends State<DemoPage> {
                 ]),
                 _section('分享到联系人', <Widget>[
                   _inputRow('图片 file URI（单张）', _imageUriCtrl),
-                  _wrapBtn('shareImageToContacts', () {
-                    final String s = _imageUriCtrl.text.trim();
-                    if (s.isEmpty) {
-                      _log('shareImageToContacts: 请填写 file:// 图片路径');
-                      return;
-                    }
+                  _wrapBtn('分享到联系人', () {
                     Douyin.instance.shareImageToContacts(
-                      imageUri: Uri.parse(s),
+                      imageUri: Uri.parse(
+                        'https://img.freepik.com/premium-vector/tiktok-app-icon-social-media-logo-vector-illustration_277909-404.jpg?semt=ais_rp_progressive&w=740&q=80',
+                      ),
                       state: 'share_img_contacts',
                     );
                   }),

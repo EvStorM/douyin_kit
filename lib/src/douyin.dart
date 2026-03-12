@@ -138,7 +138,6 @@ class Douyin {
   ///
   Future<void> shareImage({required List<Uri> imageUris, String? state}) {
     assert(imageUris.length <= 12 /*Android 抖音12.3.0时为35*/);
-    assert(imageUris.every((Uri element) => element.isScheme('file')));
     return _channel.invokeMethod<void>('shareImage', <String, dynamic>{
       'image_uris': imageUris.map((Uri element) => element.toString()).toList(),
       if (state != null) 'state': state,
@@ -148,7 +147,6 @@ class Douyin {
   ///
   Future<void> shareVideo({required List<Uri> videoUris, String? state}) {
     assert(videoUris.length <= 12);
-    assert(videoUris.every((Uri element) => element.isScheme('file')));
     return _channel.invokeMethod<void>('shareVideo', <String, dynamic>{
       'video_uris': videoUris.map((Uri element) => element.toString()).toList(),
       if (state != null) 'state': state,
@@ -157,7 +155,6 @@ class Douyin {
 
   Future<void> ksShareVideo({required List<Uri> videoUris, String? state}) {
     assert(videoUris.length <= 12);
-    assert(videoUris.every((Uri element) => element.isScheme('file')));
     return _channel.invokeMethod<void>('ksShareVideo', <String, dynamic>{
       'video_uris': videoUris.map((Uri element) => element.toString()).toList(),
       if (state != null) 'state': state,
@@ -218,7 +215,6 @@ class Douyin {
 
   ///
   Future<void> shareImageToContacts({required Uri imageUri, String? state}) {
-    assert(imageUri.isScheme('file'));
     return _channel.invokeMethod<void>(
       'shareImageToContacts',
       <String, dynamic>{
@@ -243,7 +239,7 @@ class Douyin {
           (thumbUrl.isScheme('http') || thumbUrl.isScheme('https')),
     );
     assert(url.isScheme('http') || url.isScheme('https'));
-    return _channel.invokeMethod<void>('shareToContacts', <String, dynamic>{
+    return _channel.invokeMethod<void>('shareHtmlToContacts', <String, dynamic>{
       'title': title,
       if (thumbUrl != null) 'thumb_url': thumbUrl.toString(),
       'url': url.toString(),

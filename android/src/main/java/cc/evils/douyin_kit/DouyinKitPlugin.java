@@ -435,19 +435,49 @@ public final class DouyinKitPlugin implements FlutterPlugin, ActivityAware, Meth
     }
 
     private String getShareFilePath(String fileUri) {
-        DouYinOpenApi openApi = createOpenApi();
-        if (openApi != null && openApi.isShareSupportFileProvider()) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                try {
-                    ProviderInfo providerInfo = applicationContext.getPackageManager().getProviderInfo(new ComponentName(applicationContext, DouyinFileProvider.class), PackageManager.MATCH_DEFAULT_ONLY);
-                    Uri shareFileUri = FileProvider.getUriForFile(applicationContext, providerInfo.authority, new File(Uri.parse(fileUri).getPath()));
-                    applicationContext.grantUriPermission("com.ss.android.ugc.aweme", shareFileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    return shareFileUri.toString();
-                } catch (PackageManager.NameNotFoundException e) {
-                    // ignore
-                }
-            }
+        Uri uri = Uri.parse(fileUri);
+        String scheme = uri.getScheme();
+
+        if (scheme == null) {
+            return Uri.parse(fileUri).getPath();
         }
-        return Uri.parse(fileUri).getPath();
+
+        try {
+            switch (scheme.toLowerCase()) {
+                case "file":
+                    // 原有的 file:// 处理逻辑
+                    DouYinOpenApi openApi = createOpenApi();
+                    if (openApi != null && openApi.isShareSupportFileProvider()) {
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                            try {
+                                ProviderInfo providerInfo = applicationContext.getPackageManager().getProviderInfo(new ComponentName(applicationContext, DouyinFileProvider.class), PackageManager.MATCH_DEFAULT_ONLY);
+                                Uri shareFileUri = FileProvider.getUriForFile(applicationContext, providerInfo.authority, new File(uri.getPath()));
+                                applicationContext.grantUriPermission("com.ss.android.ugc.aweme", shareFileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                return shareFileUri.toString();
+                            } catch (PackageManager.NameNotFoundException e) {
+                                // ignore
+                            }
+                        }
+                    }
+                    return uri.getPath();
+
+                case "content":
+                    // content:// URI - 直接使用或转换为 FileProvider URI
+                    return UriUtil.convertToFileProviderUri(applicationContext, uri);
+
+                case "http":
+                case "https":
+                    // http/https URI - 下载到缓存并转换为 FileProvider URI
+                    return UriUtil.convertToFileProviderUri(applicationContext, uri);
+
+                default:
+                    // 其他类型 URI - 尝试作为文件路径处理
+                    return uri.getPath();
+            }
+        } catch (Exception e) {
+            Log.e("DouyinKitPlugin", "Error processing URI: " + fileUri, e);
+            // 出错时回退到原有逻辑
+            return uri.getPath();
+        }
     }
 }
