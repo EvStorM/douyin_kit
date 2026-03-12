@@ -75,7 +75,7 @@ public final class DouyinKitPlugin implements FlutterPlugin, ActivityAware, Meth
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
-        channel = new MethodChannel(binding.getBinaryMessenger(), "v7lin.github.io/douyin_kit");
+        channel = new MethodChannel(binding.getBinaryMessenger(), "cc.evils.douyin_kit");
         channel.setMethodCallHandler(this);
 
         applicationContext = binding.getApplicationContext();

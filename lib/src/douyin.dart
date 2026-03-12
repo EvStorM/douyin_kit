@@ -11,9 +11,8 @@ class Douyin {
   static Douyin get instance => _instance;
   static final Douyin _instance = Douyin._();
 
-  late final MethodChannel _channel =
-      const MethodChannel('v7lin.github.io/douyin_kit')
-        ..setMethodCallHandler(_handleMethod);
+  late final MethodChannel _channel = const MethodChannel('cc.evils.douyin_kit')
+    ..setMethodCallHandler(_handleMethod);
 
   final StreamController _respStreamController =
       StreamController<dynamic>.broadcast();
@@ -29,16 +28,11 @@ class Douyin {
   }
 
   /// 向抖音注册应用
-  Future<void> registerApp({
-    required String? clientKey,
-  }) {
+  Future<void> registerApp({required String? clientKey}) {
     assert(clientKey?.isNotEmpty ?? false);
-    return _channel.invokeMethod<void>(
-      'registerApp',
-      <String, dynamic>{
-        'client_key': clientKey,
-      },
-    );
+    return _channel.invokeMethod<void>('registerApp', <String, dynamic>{
+      'client_key': clientKey,
+    });
   }
 
   ///
@@ -52,17 +46,11 @@ class Douyin {
   }
 
   ///
-  Future<void> auth({
-    required List<String> scope,
-    String? state,
-  }) {
-    return _channel.invokeMethod<void>(
-      'auth',
-      <String, dynamic>{
-        'scope': scope.join(','),
-        if (state != null) 'state': state,
-      },
-    );
+  Future<void> auth({required List<String> scope, String? state}) {
+    return _channel.invokeMethod<void>('auth', <String, dynamic>{
+      'scope': scope.join(','),
+      if (state != null) 'state': state,
+    });
   }
 
   /// https://open.douyin.com/platform/doc/6848806493387606024
@@ -73,18 +61,23 @@ class Douyin {
     String grantType = 'authorization_code',
   }) {
     return HttpClient()
-        .getUrl(Uri.parse(
-            'https://open.douyin.com/oauth/access_token?client_key=$clientKey&client_secret=$clientSecret&code=$code&grant_type=$grantType'))
+        .getUrl(
+          Uri.parse(
+            'https://open.douyin.com/oauth/access_token?client_key=$clientKey&client_secret=$clientSecret&code=$code&grant_type=$grantType',
+          ),
+        )
         .then((HttpClientRequest request) {
-      return request.close();
-    }).then<dynamic>((HttpClientResponse response) async {
-      if (response.statusCode == HttpStatus.ok) {
-        String content = await convert.utf8.decodeStream(response);
-        return content;
-      }
-      throw HttpException(
-          'HttpResponse statusCode: ${response.statusCode}, reasonPhrase: ${response.reasonPhrase}.');
-    });
+          return request.close();
+        })
+        .then<dynamic>((HttpClientResponse response) async {
+          if (response.statusCode == HttpStatus.ok) {
+            String content = await convert.utf8.decodeStream(response);
+            return content;
+          }
+          throw HttpException(
+            'HttpResponse statusCode: ${response.statusCode}, reasonPhrase: ${response.reasonPhrase}.',
+          );
+        });
   }
 
   /// https://open.douyin.com/platform/doc/6848806497707722765
@@ -93,18 +86,23 @@ class Douyin {
     required String refreshToken,
   }) {
     return HttpClient()
-        .getUrl(Uri.parse(
-            'https://open.douyin.com/oauth/refresh_token?client_key=$clientKey&grant_type=refresh_token&refresh_token=$refreshToken'))
+        .getUrl(
+          Uri.parse(
+            'https://open.douyin.com/oauth/refresh_token?client_key=$clientKey&grant_type=refresh_token&refresh_token=$refreshToken',
+          ),
+        )
         .then((HttpClientRequest request) {
-      return request.close();
-    }).then<dynamic>((HttpClientResponse response) async {
-      if (response.statusCode == HttpStatus.ok) {
-        String content = await convert.utf8.decodeStream(response);
-        return content;
-      }
-      throw HttpException(
-          'HttpResponse statusCode: ${response.statusCode}, reasonPhrase: ${response.reasonPhrase}.');
-    });
+          return request.close();
+        })
+        .then<dynamic>((HttpClientResponse response) async {
+          if (response.statusCode == HttpStatus.ok) {
+            String content = await convert.utf8.decodeStream(response);
+            return content;
+          }
+          throw HttpException(
+            'HttpResponse statusCode: ${response.statusCode}, reasonPhrase: ${response.reasonPhrase}.',
+          );
+        });
   }
 
   /// https://open.douyin.com/platform/doc/6848806527751489550
@@ -113,18 +111,23 @@ class Douyin {
     required String accessToken,
   }) {
     return HttpClient()
-        .getUrl(Uri.parse(
-            'https://open.douyin.com/oauth/userinfo?open_id=$openId&access_token=$accessToken'))
+        .getUrl(
+          Uri.parse(
+            'https://open.douyin.com/oauth/userinfo?open_id=$openId&access_token=$accessToken',
+          ),
+        )
         .then((HttpClientRequest request) {
-      return request.close();
-    }).then<dynamic>((HttpClientResponse response) async {
-      if (response.statusCode == HttpStatus.ok) {
-        String content = await convert.utf8.decodeStream(response);
-        return content;
-      }
-      throw HttpException(
-          'HttpResponse statusCode: ${response.statusCode}, reasonPhrase: ${response.reasonPhrase}.');
-    });
+          return request.close();
+        })
+        .then<dynamic>((HttpClientResponse response) async {
+          if (response.statusCode == HttpStatus.ok) {
+            String content = await convert.utf8.decodeStream(response);
+            return content;
+          }
+          throw HttpException(
+            'HttpResponse statusCode: ${response.statusCode}, reasonPhrase: ${response.reasonPhrase}.',
+          );
+        });
   }
 
   ///
@@ -133,53 +136,32 @@ class Douyin {
   }
 
   ///
-  Future<void> shareImage({
-    required List<Uri> imageUris,
-    String? state,
-  }) {
+  Future<void> shareImage({required List<Uri> imageUris, String? state}) {
     assert(imageUris.length <= 12 /*Android 抖音12.3.0时为35*/);
     assert(imageUris.every((Uri element) => element.isScheme('file')));
-    return _channel.invokeMethod<void>(
-      'shareImage',
-      <String, dynamic>{
-        'image_uris':
-            imageUris.map((Uri element) => element.toString()).toList(),
-        if (state != null) 'state': state,
-      },
-    );
+    return _channel.invokeMethod<void>('shareImage', <String, dynamic>{
+      'image_uris': imageUris.map((Uri element) => element.toString()).toList(),
+      if (state != null) 'state': state,
+    });
   }
 
   ///
-  Future<void> shareVideo({
-    required List<Uri> videoUris,
-    String? state,
-  }) {
+  Future<void> shareVideo({required List<Uri> videoUris, String? state}) {
     assert(videoUris.length <= 12);
     assert(videoUris.every((Uri element) => element.isScheme('file')));
-    return _channel.invokeMethod<void>(
-      'shareVideo',
-      <String, dynamic>{
-        'video_uris':
-            videoUris.map((Uri element) => element.toString()).toList(),
-        if (state != null) 'state': state,
-      },
-    );
+    return _channel.invokeMethod<void>('shareVideo', <String, dynamic>{
+      'video_uris': videoUris.map((Uri element) => element.toString()).toList(),
+      if (state != null) 'state': state,
+    });
   }
 
-  Future<void> ksShareVideo({
-    required List<Uri> videoUris,
-    String? state,
-  }) {
+  Future<void> ksShareVideo({required List<Uri> videoUris, String? state}) {
     assert(videoUris.length <= 12);
     assert(videoUris.every((Uri element) => element.isScheme('file')));
-    return _channel.invokeMethod<void>(
-      'ksShareVideo',
-      <String, dynamic>{
-        'video_uris':
-            videoUris.map((Uri element) => element.toString()).toList(),
-        if (state != null) 'state': state,
-      },
-    );
+    return _channel.invokeMethod<void>('ksShareVideo', <String, dynamic>{
+      'video_uris': videoUris.map((Uri element) => element.toString()).toList(),
+      if (state != null) 'state': state,
+    });
   }
 
   // /// TODO: 没有相关限制信息
@@ -204,17 +186,11 @@ class Douyin {
   // }
 
   ///
-  Future<void> shareHashTags({
-    required List<String> hashTags,
-    String? state,
-  }) {
-    return _channel.invokeMethod<void>(
-      'shareHashTags',
-      <String, dynamic>{
-        'hash_tags': hashTags,
-        if (state != null) 'state': state,
-      },
-    );
+  Future<void> shareHashTags({required List<String> hashTags, String? state}) {
+    return _channel.invokeMethod<void>('shareHashTags', <String, dynamic>{
+      'hash_tags': hashTags,
+      if (state != null) 'state': state,
+    });
   }
 
   // /// TODO: 文档都木有
@@ -241,16 +217,14 @@ class Douyin {
   }
 
   ///
-  Future<void> shareImageToContacts({
-    required Uri imageUri,
-    String? state,
-  }) {
+  Future<void> shareImageToContacts({required Uri imageUri, String? state}) {
     assert(imageUri.isScheme('file'));
     return _channel.invokeMethod<void>(
       'shareImageToContacts',
       <String, dynamic>{
-        'image_uris':
-            <Uri>[imageUri].map((Uri element) => element.toString()).toList(),
+        'image_uris': <Uri>[
+          imageUri,
+        ].map((Uri element) => element.toString()).toList(),
         if (state != null) 'state': state,
       },
     );
@@ -264,37 +238,29 @@ class Douyin {
     required String discription,
     String? state,
   }) {
-    assert(thumbUrl == null ||
-        (thumbUrl.isScheme('http') || thumbUrl.isScheme('https')));
-    assert(url.isScheme('http') || url.isScheme('https'));
-    return _channel.invokeMethod<void>(
-      'shareToContacts',
-      <String, dynamic>{
-        'title': title,
-        if (thumbUrl != null) 'thumb_url': thumbUrl.toString(),
-        'url': url.toString(),
-        'discription': discription,
-        if (state != null) 'state': state,
-      },
+    assert(
+      thumbUrl == null ||
+          (thumbUrl.isScheme('http') || thumbUrl.isScheme('https')),
     );
+    assert(url.isScheme('http') || url.isScheme('https'));
+    return _channel.invokeMethod<void>('shareToContacts', <String, dynamic>{
+      'title': title,
+      if (thumbUrl != null) 'thumb_url': thumbUrl.toString(),
+      'url': url.toString(),
+      'discription': discription,
+      if (state != null) 'state': state,
+    });
   }
 
   ///
   Future<bool?> isSupportOpenRecord() {
-    return _channel.invokeMethod<bool>(
-      'isSupportOpenRecord',
-    );
+    return _channel.invokeMethod<bool>('isSupportOpenRecord');
   }
 
   ///
-  Future<void> openRecord({
-    String? state,
-  }) {
-    return _channel.invokeMethod<void>(
-      'openRecord',
-      <String, dynamic>{
-        if (state != null) 'state': state,
-      },
-    );
+  Future<void> openRecord({String? state}) {
+    return _channel.invokeMethod<void>('openRecord', <String, dynamic>{
+      if (state != null) 'state': state,
+    });
   }
 }
