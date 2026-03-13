@@ -110,6 +110,9 @@ public class KwaiFileProviderUtil {
             providerInfo.authority, file);
         activity.grantUriPermission(KwaiPlatformUtil.getPackageNameByReq(activity, req), fileUri,
             Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        activity.grantUriPermission("com.ss.android.ugc.aweme", fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        activity.grantUriPermission("com.ss.android.ugc.aweme.lite",
+            fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
         filePath = fileUri.toString();
       }
     } catch (Exception e) {

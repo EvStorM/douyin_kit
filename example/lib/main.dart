@@ -108,6 +108,61 @@ class _DemoPageState extends State<DemoPage> {
               controller: _scrollController,
               padding: const EdgeInsets.all(16),
               children: <Widget>[
+                _section('分享到联系人', <Widget>[
+                  _inputRow('图片 file URI（单张）', _imageUriCtrl),
+                  _wrapBtn('分享到联系人', () async {
+                    // 1. 使用 load() 获取 assets 中图片的字节数据
+                    final ByteData byteData = await rootBundle.load(
+                      'assets/1.png',
+                    );
+                    // 2. 获取系统临时目录
+                    final Directory tempDir = Directory.systemTemp;
+                    // 3. 构建临时文件路径
+                    final String tempPath = '${tempDir.path}/assets_1.png';
+                    // 4. 将字节数据写入临时文件
+                    final File imageFile = File(tempPath);
+                    await imageFile.writeAsBytes(byteData.buffer.asUint8List());
+                    // 5. 创建文件 URI 并分享
+                    final Uri imageUri = Uri.file(imageFile.path);
+                    Douyin.instance.shareImageToContacts(
+                      imageUri: imageUri,
+                      state: 'share_img_contacts',
+                    );
+                  }),
+                  _wrapBtn('shareHtmlToContacts（固定内容）', () {
+                    Douyin.instance.shareHtmlToContacts(
+                      title: 'Flutter 抖音开放平台 SDK',
+                      url: Uri.parse('https://qpweb.bjbhd.xyz/'),
+                      discription: '抖音开放平台提供了丰富的 SDK 功能，欢迎体验！',
+                      thumbUrl: Uri.parse(
+                        'https://pic.rmb.bdstatic.com/bjh/bb87285bead/241026/076392b2350468578255552fcaca2a7c.jpeg@h_1280',
+                      ),
+                      state: 'share_html_contacts',
+                    );
+                  }),
+                ]),
+                _section('分享到快手', <Widget>[
+                  _inputRow('图片 file URI（单张）', _imageUriCtrl),
+                  _wrapBtn('分享到快手', () async {
+                    // 1. 使用 load() 获取 assets 中图片的字节数据
+                    final ByteData byteData = await rootBundle.load(
+                      'assets/1.mp4',
+                    );
+                    // 2. 获取系统临时目录
+                    final Directory tempDir = Directory.systemTemp;
+                    // 3. 构建临时文件路径
+                    final String tempPath = '${tempDir.path}/assets_1.mp4';
+                    // 4. 将字节数据写入临时文件
+                    final File imageFile = File(tempPath);
+                    await imageFile.writeAsBytes(byteData.buffer.asUint8List());
+                    // 5. 创建文件 URI 并分享
+                    final Uri imageUri = Uri.file(imageFile.path);
+                    Douyin.instance.ksShareVideo(
+                      videoUris: <Uri>[imageUri],
+                      state: 'ks_share_img',
+                    );
+                  }),
+                ]),
                 _section('环境检测', <Widget>[
                   _wrapBtn(
                     '是否安装抖音',
@@ -283,39 +338,7 @@ class _DemoPageState extends State<DemoPage> {
                     );
                   }),
                 ]),
-                _section('分享到联系人', <Widget>[
-                  _inputRow('图片 file URI（单张）', _imageUriCtrl),
-                  _wrapBtn('分享到联系人', () async {
-                    // 1. 使用 load() 获取 assets 中图片的字节数据
-                    final ByteData byteData = await rootBundle.load(
-                      'assets/1.png',
-                    );
-                    // 2. 获取系统临时目录
-                    final Directory tempDir = Directory.systemTemp;
-                    // 3. 构建临时文件路径
-                    final String tempPath = '${tempDir.path}/assets_1.png';
-                    // 4. 将字节数据写入临时文件
-                    final File imageFile = File(tempPath);
-                    await imageFile.writeAsBytes(byteData.buffer.asUint8List());
-                    // 5. 创建文件 URI 并分享
-                    final Uri imageUri = Uri.file(imageFile.path);
-                    Douyin.instance.shareImageToContacts(
-                      imageUri: imageUri,
-                      state: 'share_img_contacts',
-                    );
-                  }),
-                  _wrapBtn('shareHtmlToContacts（固定内容）', () {
-                    Douyin.instance.shareHtmlToContacts(
-                      title: 'Flutter 抖音开放平台 SDK',
-                      url: Uri.parse('https://qpweb.bjbhd.xyz/'),
-                      discription: '抖音开放平台提供了丰富的 SDK 功能，欢迎体验！',
-                      thumbUrl: Uri.parse(
-                        'https://pic.rmb.bdstatic.com/bjh/bb87285bead/241026/076392b2350468578255552fcaca2a7c.jpeg@h_1280',
-                      ),
-                      state: 'share_html_contacts',
-                    );
-                  }),
-                ]),
+
                 _section('录制', <Widget>[
                   _wrapBtn(
                     'openRecord',

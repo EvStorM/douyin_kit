@@ -32,8 +32,7 @@ android {
     }
 
     defaultConfig {
-        // applicationId "cc.evils.douyin_kit.example"
-        applicationId "com.bjbhd.qiaopaicamera"
+        applicationId "cc.evils.douyin_kit.example"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
@@ -47,10 +46,10 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file("qiaopai.keystore")
-            storePassword 'com.bjbhd.qiaopaicamera'
-            keyAlias 'com.bjbhd.qiaopaicamera'
-            keyPassword 'com.bjbhd.qiaopaicamera'
+            storeFile file("test.keystore")
+            storePassword '123456'
+            keyAlias 'test'
+            keyPassword '123456'
         }
         release {
             storeFile file("test.keystore")
