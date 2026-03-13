@@ -132,7 +132,7 @@ public class UriUtil {
 
     public static String getFileProviderUri(Context context, File file) throws IOException {
         try {
-            String authority = context.getPackageName() + ".douyin_kit.fileprovider";
+            String authority = context.getPackageName() + ".DouyinFileProvider";
             Uri contentUri = FileProvider.getUriForFile(context, authority, file);
             context.grantUriPermission("com.ss.android.ugc.aweme", contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
             return contentUri.toString();
