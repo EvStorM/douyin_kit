@@ -445,21 +445,8 @@ public final class DouyinKitPlugin implements FlutterPlugin, ActivityAware, Meth
         try {
             switch (scheme.toLowerCase()) {
                 case "file":
-                    // 原有的 file:// 处理逻辑
-                    DouYinOpenApi openApi = createOpenApi();
-                    if (openApi != null && openApi.isShareSupportFileProvider()) {
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                            try {
-                                ProviderInfo providerInfo = applicationContext.getPackageManager().getProviderInfo(new ComponentName(applicationContext, DouyinFileProvider.class), PackageManager.MATCH_DEFAULT_ONLY);
-                                Uri shareFileUri = FileProvider.getUriForFile(applicationContext, providerInfo.authority, new File(uri.getPath()));
-                                applicationContext.grantUriPermission("com.ss.android.ugc.aweme", shareFileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                return shareFileUri.toString();
-                            } catch (PackageManager.NameNotFoundException e) {
-                                // ignore
-                            }
-                        }
-                    }
-                    return uri.getPath();
+                    // 统一使用 UriUtil 处理，将文件复制到缓存目录后再生成 FileProvider URI
+                    return UriUtil.convertToFileProviderUri(applicationContext, uri);
 
                 case "content":
                     // content:// URI - 直接使用或转换为 FileProvider URI
